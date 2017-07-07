@@ -1,3 +1,28 @@
+// Object.assign polyfill
+if (typeof Object.assign !== 'function') {
+  Object.assign = function assign(target, ...args) { // .length of function is 2
+    if (target == null) { // TypeError if undefined or null
+      throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    const to = Object(target);
+
+    for (let index = 0; index < args.length; index += 1) {
+      const nextSource = args[index];
+
+      if (nextSource != null) { // Skip over if undefined or null
+        for (const nextKey in nextSource) { // eslint-disable-line no-restricted-syntax
+          // Avoid bugs when hasOwnProperty is shadowed
+          if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+            to[nextKey] = nextSource[nextKey];
+          }
+        }
+      }
+    }
+    return to;
+  };
+}
+
 /**
  * connection基类
  */

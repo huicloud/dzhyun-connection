@@ -93,9 +93,39 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// Object.assign polyfill
+if (typeof Object.assign !== 'function') {
+  Object.assign = function assign(target) {
+    // .length of function is 2
+    if (target == null) {
+      // TypeError if undefined or null
+      throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    var to = Object(target);
+
+    for (var index = 0; index < (arguments.length <= 1 ? 0 : arguments.length - 1); index += 1) {
+      var nextSource = arguments.length <= index + 1 ? undefined : arguments[index + 1];
+
+      if (nextSource != null) {
+        // Skip over if undefined or null
+        for (var nextKey in nextSource) {
+          // eslint-disable-line no-restricted-syntax
+          // Avoid bugs when hasOwnProperty is shadowed
+          if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+            to[nextKey] = nextSource[nextKey];
+          }
+        }
+      }
+    }
+    return to;
+  };
+}
+
 /**
  * connection基类
  */
+
 var BaseConnection = function () {
 
   /**
