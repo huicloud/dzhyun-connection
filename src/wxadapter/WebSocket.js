@@ -73,9 +73,9 @@ class WebSocket {
     wx.sendSocketMessage({ data: data })
   }
 }
-WebSocket.prototype.addEventListener = EventTarget.prototype.addEventListener;
-WebSocket.prototype.removeEventListener = EventTarget.prototype.removeEventListener;
-WebSocket.prototype.dispatchEvent = EventTarget.prototype.dispatchEvent;
+WebSocket.prototype.addEventListener = EventTarget.default.prototype.addEventListener;
+WebSocket.prototype.removeEventListener = EventTarget.default.prototype.removeEventListener;
+WebSocket.prototype.dispatchEvent = EventTarget.default.prototype.dispatchEvent;
 
 WebSocket.CONNECTING = 0;
 WebSocket.OPEN = 1;
