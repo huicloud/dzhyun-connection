@@ -1,4 +1,11 @@
-import ws from 'ws';
+// 小程序环境中存在全局对象wx
+let ws = {}
+if (typeof wx !== 'undefined'){
+  ws = require('./wxadapter/WebSocket.js')
+}else{
+  ws = require('ws');
+}
+
 
 // WebSocket依赖，node环境使用模块ws
 if (typeof window !== 'undefined') {

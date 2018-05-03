@@ -1,4 +1,11 @@
-import xhr2 from 'xhr2';
+
+// 小程序环境中存在全局对象wx
+let xhr2 = {};
+if (typeof wx !== 'undefined'){
+  xhr2 = require('./wxadapter/XmlHttpRequst.js')
+}else{
+  xhr2 = require('xhr2');
+}
 
 // 判断环境，浏览器环境存在window对象
 if (typeof window !== 'undefined') {

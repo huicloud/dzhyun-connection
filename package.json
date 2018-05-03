@@ -1,6 +1,6 @@
 {
   "name": "dzhyun-connection",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "大智慧云平台连接模块",
   "main": "lib/index.js",
   "browser": {
@@ -9,7 +9,8 @@
   },
   "scripts": {},
   "keywords": [
-    "dzhyun", "connection"
+    "dzhyun",
+    "connection"
   ],
   "author": "jiagang <jiagang1985@gmail.com>",
   "license": "MIT",
@@ -39,6 +40,7 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "event-target": "^1.2.2",
     "ws": "^2.2.3",
     "xhr2": "^0.1.4"
   }
