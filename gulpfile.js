@@ -19,15 +19,14 @@ gulp.task('clean-dist', function() {
   return del([dist]);
 });
 
-gulp.task('node-lib', ['clean-lib'], function () {
+gulp.task('node-lib', gulp.series(['clean-lib'], function () {
   return gulp.src(src)
     .pipe(babel())
     .pipe(gulp.dest(lib));
-});
+}));
 
-gulp.task('browser-dist', ['clean-dist'], function() {
-  return gulp.src([])
-    .pipe(webpackStream({
+gulp.task('browser-dist', gulp.series(['clean-dist'], function() {
+  return webpackStream({
       entry: {
         'dzhyun-connection': './src/index.js',
         'dzhyun-connection.min': './src/index.js',
@@ -55,8 +54,8 @@ gulp.task('browser-dist', ['clean-dist'], function() {
         }),
       ],
       devtool: 'source-map'
-    }, webpack))
+    }, webpack)
     .pipe(gulp.dest(dist));
-});
+}));
 
-gulp.task('default', ['node-lib', 'browser-dist']);
+gulp.task('default', gulp.series('node-lib', 'browser-dist'));
