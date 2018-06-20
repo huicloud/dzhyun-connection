@@ -41,7 +41,7 @@ class BaseConnection {
     }
     if (this.constructor === BaseConnection) {
       // eslint-disable-next-line no-use-before-define
-      return getInstance(address, options, handler);
+      return getInstance(address, options, handler, secure);
     }
     this._address = address;
     this.options = options || {};
@@ -50,7 +50,7 @@ class BaseConnection {
       this._secure = handler;
       this._handler = null;
     } else {
-      this._secure = secure || getDefaultSecure();
+      this._secure = secure || false;
       this._handler = handler;
     }
 
@@ -121,21 +121,21 @@ BaseConnection.EVENT_RESPONSE = 'response';
 BaseConnection.EVENT_MESSAGE = 'message';
 BaseConnection.EVENT_PROGRESS = 'progress';
 
-function getInstance(url, options, handler) {
-  const [, , protocol = 'http', urlWithoutProtocol] = /^((\w+):\/\/)?(.*)/.exec(url);
-
-  const func = BaseConnection[protocol];
-  if (!func) {
-    throw new Error(`protocol "${protocol}" no support`);
-  }
-  return func(urlWithoutProtocol, options, handler);
-}
-
 function getDefaultSecure() {
   if ((typeof window !== 'undefined') && window.location) {
     return /^https:/.test(window.location.href);
   }
   return false;
+}
+
+function getInstance(url, options, handler, secure = getDefaultSecure()) {
+  const [, , p = 'http', urlWithoutProtocol] = /^((\w+)s*:\/\/)?(.*)/.exec(url);
+  const protocol = secure ? `${p}s` : p;
+  const func = BaseConnection[protocol];
+  if (!func) {
+    throw new Error(`protocol "${protocol}" no support`);
+  }
+  return func(urlWithoutProtocol, options, handler);
 }
 
 export default BaseConnection;

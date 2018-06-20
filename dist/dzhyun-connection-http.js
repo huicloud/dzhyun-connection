@@ -143,7 +143,7 @@ var BaseConnection = function () {
     }
     if (this.constructor === BaseConnection) {
       // eslint-disable-next-line no-use-before-define
-      return getInstance(address, options, handler);
+      return getInstance(address, options, handler, secure);
     }
     this._address = address;
     this.options = options || {};
@@ -152,7 +152,7 @@ var BaseConnection = function () {
       this._secure = handler;
       this._handler = null;
     } else {
-      this._secure = secure || getDefaultSecure();
+      this._secure = secure || false;
       this._handler = handler;
     }
 
@@ -248,26 +248,29 @@ BaseConnection.EVENT_RESPONSE = 'response';
 BaseConnection.EVENT_MESSAGE = 'message';
 BaseConnection.EVENT_PROGRESS = 'progress';
 
-function getInstance(url, options, handler) {
-  var _$exec = /^((\w+):\/\/)?(.*)/.exec(url),
-      _$exec2 = _slicedToArray(_$exec, 4),
-      _$exec2$ = _$exec2[2],
-      protocol = _$exec2$ === undefined ? 'http' : _$exec2$,
-      urlWithoutProtocol = _$exec2[3];
-
-  var func = BaseConnection[protocol];
-  if (!func) {
-    throw new Error('protocol "' + protocol + '" no support');
-  }
-  return func(urlWithoutProtocol, options, handler);
-}
-
 function getDefaultSecure() {
   if (typeof window !== 'undefined' && window.location) {
     return (/^https:/.test(window.location.href)
     );
   }
   return false;
+}
+
+function getInstance(url, options, handler) {
+  var secure = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : getDefaultSecure();
+
+  var _$exec = /^((\w+)s*:\/\/)?(.*)/.exec(url),
+      _$exec2 = _slicedToArray(_$exec, 4),
+      _$exec2$ = _$exec2[2],
+      p = _$exec2$ === undefined ? 'http' : _$exec2$,
+      urlWithoutProtocol = _$exec2[3];
+
+  var protocol = secure ? p + 's' : p;
+  var func = BaseConnection[protocol];
+  if (!func) {
+    throw new Error('protocol "' + protocol + '" no support');
+  }
+  return func(urlWithoutProtocol, options, handler);
 }
 
 exports.default = BaseConnection;
