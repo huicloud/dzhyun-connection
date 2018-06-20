@@ -33,7 +33,7 @@ class BaseConnection {
    * @param {!string} address 连接地址
    * @param {!object} options 设置参数
    * @param {object=} handler 事件处理对象
-   * @param {boolean=} [secure=false]
+   * @param {boolean=} secure 是否使用ssl(https 或者 wss)，默认根据页面url自动判断
    */
   constructor(address, options, handler, secure) {
     if (typeof address !== 'string') {
@@ -50,7 +50,7 @@ class BaseConnection {
       this._secure = handler;
       this._handler = null;
     } else {
-      this._secure = secure || false;
+      this._secure = secure || getDefaultSecure();
       this._handler = handler;
     }
 
@@ -129,6 +129,13 @@ function getInstance(url, options, handler) {
     throw new Error(`protocol "${protocol}" no support`);
   }
   return func(urlWithoutProtocol, options, handler);
+}
+
+function getDefaultSecure() {
+  if ((typeof window !== 'undefined') && window.location) {
+    return /^https:/.test(window.location.href);
+  }
+  return false;
 }
 
 export default BaseConnection;
