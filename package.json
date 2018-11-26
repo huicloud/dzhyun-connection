@@ -1,6 +1,6 @@
 {
   "name": "dzhyun-connection",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "大智慧云平台连接模块",
   "main": "lib/index.js",
   "browser": {

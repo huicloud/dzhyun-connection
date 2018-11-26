@@ -1912,6 +1912,12 @@ var WebSocketConnection = function (_BaseConnection) {
     if (deferred === false) {
       _this._connect();
     }
+    // 在浏览器环境中，监听离线事件将手动中断ws连接
+    if (typeof window !== 'undefined') {
+      window.addEventListener('offline', function () {
+        return _this.close();
+      });
+    }
     return _this;
   }
 

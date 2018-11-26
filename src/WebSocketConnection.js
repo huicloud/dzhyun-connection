@@ -22,6 +22,10 @@ class WebSocketConnection extends BaseConnection {
     if (deferred === false) {
       this._connect();
     }
+    // 在浏览器环境中，监听离线事件将手动中断ws连接
+    if (typeof window !== 'undefined') {
+      window.addEventListener('offline', () => this.close());
+    }
   }
 
   getStatus() {
@@ -99,4 +103,3 @@ BaseConnection.wss = function wss(url, options, handler) {
 };
 
 module.exports = BaseConnection;
-
