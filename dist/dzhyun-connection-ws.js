@@ -259,14 +259,14 @@ function getDefaultSecure() {
 function getInstance(url, options, handler) {
   var secure = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : getDefaultSecure();
 
-  var _$exec = /^((\w+)s*:\/\/)?(.*)/.exec(url),
+  var _$exec = /^((\w+):\/\/)?(.*)/.exec(url),
       _$exec2 = _slicedToArray(_$exec, 4),
       _$exec2$ = _$exec2[2],
       p = _$exec2$ === undefined ? 'http' : _$exec2$,
       urlWithoutProtocol = _$exec2[3];
 
   var protocol = secure ? p + 's' : p;
-  var func = BaseConnection[protocol];
+  var func = BaseConnection[protocol] || BaseConnection[p];
   if (!func) {
     throw new Error('protocol "' + protocol + '" no support');
   }

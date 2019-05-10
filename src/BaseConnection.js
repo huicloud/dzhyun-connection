@@ -129,9 +129,9 @@ function getDefaultSecure() {
 }
 
 function getInstance(url, options, handler, secure = getDefaultSecure()) {
-  const [, , p = 'http', urlWithoutProtocol] = /^((\w+)s*:\/\/)?(.*)/.exec(url);
+  const [, , p = 'http', urlWithoutProtocol] = /^((\w+):\/\/)?(.*)/.exec(url);
   const protocol = secure ? `${p}s` : p;
-  const func = BaseConnection[protocol];
+  const func = BaseConnection[protocol] || BaseConnection[p];
   if (!func) {
     throw new Error(`protocol "${protocol}" no support`);
   }
