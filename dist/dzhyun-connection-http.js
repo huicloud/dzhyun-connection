@@ -1912,7 +1912,7 @@ var HttpConnection = function (_BaseConnection) {
               _this2.trigger(_BaseConnection3.default.EVENT_SEND, message);
               _this2.trigger(_BaseConnection3.default.EVENT_REQUEST, message);
             }
-            if (origFun) origFun();
+            if (origFun) origFun.call(xhr);
           };
         }(xhr.onreadystatechange);
       }

@@ -40,7 +40,7 @@ class HttpConnection extends BaseConnection {
           this.trigger(BaseConnection.EVENT_SEND, message);
           this.trigger(BaseConnection.EVENT_REQUEST, message);
         }
-        if (origFun) origFun();
+        if (origFun) origFun.call(xhr);
       })(xhr.onreadystatechange);
     }
 
